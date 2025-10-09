@@ -3,12 +3,15 @@
 #include <stdlib.h>
 #include <time.h>
 #include <sys/time.h>
+#include <sys/socket.h>
+#include "udp_client.h"
 
 #define PIXELCOUNT 130560
 #define PIC_WIDTH 480
 #define PIC_HEIGHT 272
 #define ROW_LENGTH 1440 // length of row 480 * 3(bytes per pixels)
 #define PIXEL_START 54
+
 
 
 void pic_to_pic();
@@ -18,6 +21,8 @@ int main(){
     // pic_to_pic();
 
     read_bmp();
+
+    return 0;
 }
 
 void pic_to_pic(){
@@ -84,20 +89,33 @@ void read_bmp(){
 
     const int counted_pixels = (file_len - PIXEL_START) / 3;
 
+    // prints expected values and counted values to ensure all is good
     printf("Expected pixels: %d\ncounted pixels: %d\n", PIXELCOUNT, counted_pixels);
     printf("buffer size: %ld\n", (file_len - 54) /3);
 
     FILE *new_pic = fopen("new_bmp.bmp", "wb");
     fwrite(buffer, 1, 54, new_pic);
-
+    
 
     for(int i = 54; i < file_len; i += 3){
         fwrite(&buffer[i], 1, 3, new_pic); // writes 3 byte at a time in order: B, G, A
     }
 
     free(buffer); // frees malloc buffer
+    buffer = NULL;
 
     clock_end = clock(); // ends ms time counter
+    printf("\ntime taken: %f sec\n", (double)(clock_end - clock_start)/CLOCKS_PER_SEC); // print total time taken
 
-    printf("\ntime taken: %f ms\n", (double)(clock_end - clock_start)); // print total time taken
+    
+    char *msg = malloc(64);
+    strcpy(msg, "Hejsan mamma och pappa\n");
+    
+    printf("%s", msg);
+
+    // send_msg_udp(msg);
+
+    free(msg);
+    msg = NULL;
+
 }
