@@ -11,6 +11,9 @@
 #define PORT 7777
 #define PACKAGE_SIZE 1024
 #define PIXELCOUNT 130560
+#define SERVER_ADDR "127.0.0.1" // loopback
+// #define SERVER_ADDR "192.168.0.102" //local net
+
 
 int send_packets(char *buf);
 char *build_udp_packet(char *buf, uint16_t packet_id, uint16_t packet_amt, uint32_t offset, int payload_size, int total_bytes);
@@ -25,7 +28,7 @@ int send_msg_udp(char *data, int size_data){ // sends single packet to server, r
     // int test_size = strlen(test_message);
 
     struct sockaddr_in servaddr;
-        servaddr.sin_addr.s_addr = inet_addr("127.0.0.1");
+        servaddr.sin_addr.s_addr = inet_addr(SERVER_ADDR);
         servaddr.sin_port = htons(PORT);
         servaddr.sin_family = AF_INET;
 
@@ -45,7 +48,7 @@ int send_packets(char *buf){
     int total_packets = 386;    // totalbytes (391734) / payload size (1016) ~= 386    385,5 rounded up
     
     struct sockaddr_in servaddr;
-        servaddr.sin_addr.s_addr = inet_addr("127.0.0.1");
+        servaddr.sin_addr.s_addr = inet_addr(SERVER_ADDR);
         servaddr.sin_port = htons(PORT);
         servaddr.sin_family = AF_INET;
 
@@ -91,4 +94,28 @@ char *build_udp_packet(char *buf, uint16_t packet_id, uint16_t packet_amt, uint3
     }
 
     return buffer;
+}
+
+int wait_for_request(){ // returns 1 if got message
+    char *buffer[8];
+
+    struct sockaddr_in servaddr, clientaddr;
+        servaddr.sin_addr.s_addr = inet_addr(SERVER_ADDR);
+        servaddr.sin_port = htons(PORT);
+        servaddr.sin_family = AF_INET;
+
+    int sockfd = socket(AF_INET, SOCK_DGRAM, 0);
+    int len = sizeof(clientaddr);
+    
+    bind(sockfd, (const struct sockaddr*)&servaddr, sizeof(servaddr));
+
+    int n = 0;
+    while(!n){
+        n = recvfrom(sockfd, buffer, sizeof(buffer), 0, (struct sockaddr*)&clientaddr, &len);
+    }
+    
+    puts((const char *)buffer);
+
+    close(sockfd);
+    return 1;
 }

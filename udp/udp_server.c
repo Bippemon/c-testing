@@ -5,11 +5,17 @@
 #include <unistd.h>
 
 #define PORT 7777
+#define SERVER_ADDR "127.0.0.1" // loopback
+// #define SERVER_ADDR "192.168.0.102" //local net
+
 
 int server_loop(FILE *data);
-void write_to_file(char *buffer);
+void request_image();
+// void write_to_file(char *buffer);
 
 int main(){
+    request_image();
+
     FILE *new_file = fopen("recieved-file.bmp", "wb");
 
     server_loop(new_file);
@@ -20,15 +26,14 @@ int main(){
 int server_loop(FILE *file_to_write){
     char buffer[1024];
     struct sockaddr_in servaddr, clientaddr;
-    servaddr.sin_addr.s_addr = inet_addr("127.0.0.1");
-    servaddr.sin_port = htons(PORT);
-    servaddr.sin_family = AF_INET;
+        servaddr.sin_addr.s_addr = inet_addr(SERVER_ADDR);
+        servaddr.sin_port = htons(PORT);
+        servaddr.sin_family = AF_INET;
     
     int sockfd = socket(AF_INET, SOCK_DGRAM, 0);
+    int len = sizeof(clientaddr);
     
     bind(sockfd, (const struct sockaddr*)&servaddr, sizeof(servaddr));
-    
-    int len = sizeof(clientaddr);
 
     int expected_packets = 386;
 
@@ -48,10 +53,6 @@ int server_loop(FILE *file_to_write){
         if(n >= 8){ // only write if packet larger than 8 bytes
             fseek(file_to_write, offset, SEEK_SET);
             fwrite(buffer + 8, 1, n - 8, file_to_write);
-
-            printf("Packet_id: %u\n", packet_id);
-            printf("Packet_amt: %u\n", packet_amt);
-            printf("Offset: %u\n", offset);
             
             expected_packets--;
         }
@@ -64,6 +65,21 @@ int server_loop(FILE *file_to_write){
     }
 
     return 0;
+}
+
+void request_image(){
+    char buffer[8] = "pic pls";
+
+    struct sockaddr_in servaddr, clientaddr;
+        servaddr.sin_addr.s_addr = inet_addr(SERVER_ADDR);
+        servaddr.sin_port = htons(PORT);
+        servaddr.sin_family = AF_INET;
+
+    int sockfd = socket(AF_INET, SOCK_DGRAM, 0);
+
+    sendto(sockfd, buffer, 8, 0, (const struct sockaddr*)&servaddr, sizeof(servaddr));
+
+    close(sockfd);
 }
 
 // void write_to_file(char *buffer){

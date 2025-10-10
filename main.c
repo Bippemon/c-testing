@@ -21,7 +21,12 @@ void write_bmp(unsigned char *buf, char *new_file, int new_file_len);
 int main(){
     // pic_to_pic();
 
-    unsigned char *picture = read_bmp("original.bmp");
+    printf("Waiting for request...\n");
+    while(!wait_for_request()){
+        continue;
+    }
+
+    unsigned char *picture = read_bmp("benkis.bmp");
     send_packets(picture);
     
     return 0;
@@ -131,4 +136,3 @@ unsigned char *read_bmp(char *file_to_read){
 
     free(buf); // frees malloc buffer after copying
 }
-
