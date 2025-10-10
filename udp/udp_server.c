@@ -6,7 +6,7 @@
 
 #define PORT 7777
 // #define SERVER_ADDR "127.0.0.1" // loopback
-#define SERVER_ADDR "192.168.0.255" //local net
+#define SERVER_ADDR "192.168.0.220" //local net
 #define CLIENT_ADDR "192.168.0.104"
 
 
@@ -82,6 +82,7 @@ void request_image(){
 
     sendto(sockfd, buffer, 8, 0, (const struct sockaddr*)&servaddr, sizeof(servaddr));
 
+    
     close(sockfd);
 }
 

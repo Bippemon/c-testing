@@ -12,7 +12,7 @@
 #define PACKAGE_SIZE 1024
 #define PIXELCOUNT 130560
 // #define SERVER_ADDR "127.0.0.1" // loopback
-#define SERVER_ADDR "192.168.0.255" //local net
+#define SERVER_ADDR "192.168.0.220" //local net
 #define CLIENT_ADDR "192.168.0.104"
 
 
@@ -98,10 +98,10 @@ char *build_udp_packet(char *buf, uint16_t packet_id, uint16_t packet_amt, uint3
 }
 
 int wait_for_request(){ // returns 1 if got message
-    char *buffer[8];
+    char buffer[8];
 
     struct sockaddr_in servaddr, clientaddr;
-        servaddr.sin_addr.s_addr = inet_addr(CLIENT_ADDR);
+        servaddr.sin_addr.s_addr = INADDR_ANY; // listens to all incoming
         servaddr.sin_port = htons(PORT);
         servaddr.sin_family = AF_INET;
 

@@ -5,7 +5,7 @@
 #include <stdlib.h>
 #include <sys/socket.h>
 
-#define SERVER_ADDR "192.168.0.255" //local net
+#define SERVER_ADDR "192.168.0.220" //local net
 #define CLIENT_ADDR "192.168.0.104"
 
 int send_msg_udp(char *data, int size_data);
