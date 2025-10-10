@@ -11,8 +11,9 @@
 #define PORT 7777
 #define PACKAGE_SIZE 1024
 #define PIXELCOUNT 130560
-#define SERVER_ADDR "127.0.0.1" // loopback
-// #define SERVER_ADDR "192.168.0.102" //local net
+// #define SERVER_ADDR "127.0.0.1" // loopback
+#define SERVER_ADDR "192.168.0.255" //local net
+#define CLIENT_ADDR "192.168.0.104"
 
 
 int send_packets(char *buf);
@@ -100,7 +101,7 @@ int wait_for_request(){ // returns 1 if got message
     char *buffer[8];
 
     struct sockaddr_in servaddr, clientaddr;
-        servaddr.sin_addr.s_addr = inet_addr(SERVER_ADDR);
+        servaddr.sin_addr.s_addr = inet_addr(CLIENT_ADDR);
         servaddr.sin_port = htons(PORT);
         servaddr.sin_family = AF_INET;
 

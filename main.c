@@ -14,7 +14,7 @@
 
 
 void pic_to_pic();
-unsigned char *read_bmp();
+unsigned char *read_bmp(char *file_to_read);
 void write_bmp(unsigned char *buf, char *new_file, int new_file_len);
 
 
