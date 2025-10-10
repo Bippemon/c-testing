@@ -12,8 +12,8 @@
 #define PACKAGE_SIZE 1024
 #define PIXELCOUNT 130560
 // #define SERVER_ADDR "127.0.0.1" // loopback
-#define LAPTOP_ADDR "192.168.0.220" //local net
-#define DESKTOP_ADDR "192.168.0.104"
+#define LAPTOP_ADDR "127.0.0.1" 
+#define DESKTOP_ADDR "127.0.0.1"
 
 
 int send_packets(char *buf);

@@ -6,8 +6,8 @@
 
 #define PORT 7777
 // #define SERVER_ADDR "127.0.0.1" // loopback
-#define LAPTOP_ADDR "192.168.0.220" //local net
-#define DESKTOP_ADDR "192.168.0.104"
+#define LAPTOP_ADDR "127.0.0.1" //local net
+#define DESKTOP_ADDR "127.0.0.1"
 
 
 int server_loop(FILE *data);
