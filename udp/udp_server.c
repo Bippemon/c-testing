@@ -27,7 +27,7 @@ int main(){
 int server_loop(FILE *file_to_write){
     char buffer[1024];
     struct sockaddr_in servaddr, clientaddr;
-        servaddr.sin_addr.s_addr = inet_addr(SERVER_ADDR);
+        servaddr.sin_addr.s_addr = inet_addr(CLIENT_ADDR);
         servaddr.sin_port = htons(PORT);
         servaddr.sin_family = AF_INET;
     
@@ -69,6 +69,8 @@ int server_loop(FILE *file_to_write){
 }
 
 void request_image(){
+    printf("Requesting from address: %s\n", CLIENT_ADDR);
+
     char buffer[8] = "pic pls";
 
     struct sockaddr_in servaddr, clientaddr;
