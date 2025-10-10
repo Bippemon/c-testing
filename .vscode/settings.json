@@ -2,6 +2,9 @@
     "files.associations": {
         "stdlib.h": "c",
         "udp-client.h": "c",
-        "stdio.h": "c"
+        "stdio.h": "c",
+        "endian.h": "c",
+        "udp_client.h": "c",
+        "socket.h": "c"
     }
 }

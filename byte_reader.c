@@ -6,22 +6,24 @@
 #include <sys/socket.h>
 #include "udp_client.h"
 
-#define PIXELCOUNT 130560
+
 #define PIC_WIDTH 480
 #define PIC_HEIGHT 272
 #define ROW_LENGTH 1440 // length of row 480 * 3(bytes per pixels)
 #define PIXEL_START 54
 
 
-
 void pic_to_pic();
-void read_bmp();
+unsigned char *read_bmp();
+void write_bmp(unsigned char *buf, char *new_file, int new_file_len);
+
 
 int main(){
     // pic_to_pic();
 
-    read_bmp();
-
+    unsigned char *picture = read_bmp("original.bmp");
+    send_packets(picture);
+    
     return 0;
 }
 
@@ -68,7 +70,7 @@ void pic_to_pic(){
     free(data);
 }
 
-void read_bmp(){
+unsigned char *read_bmp(char *file_to_read){ 
     unsigned char *buffer;
     size_t file_len;
     
@@ -77,7 +79,7 @@ void read_bmp(){
     
     clock_start = clock(); //starts ms clock counter
     
-    FILE *png = fopen("original.bmp", "rb");
+    FILE *png = fopen(file_to_read, "rb");
     fseek(png, 0, SEEK_END);
     file_len = ftell(png);
     rewind(png);
@@ -87,35 +89,46 @@ void read_bmp(){
     fread(buffer, 1, file_len, png);
     fclose(png);
 
-    const int counted_pixels = (file_len - PIXEL_START) / 3;
+    return buffer; // remove return to 
 
-    // prints expected values and counted values to ensure all is good
-    printf("Expected pixels: %d\ncounted pixels: %d\n", PIXELCOUNT, counted_pixels);
-    printf("buffer size: %ld\n", (file_len - 54) /3);
-
-    FILE *new_pic = fopen("new_bmp.bmp", "wb");
-    fwrite(buffer, 1, 54, new_pic);
+    // this is ignored
+    write_bmp(buffer, "new_bmp.bmp", file_len); // frees memory after done
     
-
-    for(int i = 54; i < file_len; i += 3){
-        fwrite(&buffer[i], 1, 3, new_pic); // writes 3 byte at a time in order: B, G, A
-    }
-
-    free(buffer); // frees malloc buffer
-    buffer = NULL;
+    buffer = NULL; // removes dangling pointer
 
     clock_end = clock(); // ends ms time counter
-    printf("\ntime taken: %f sec\n", (double)(clock_end - clock_start)/CLOCKS_PER_SEC); // print total time taken
+    printf("\ntime taken: %f sec \n", (double)(clock_end - clock_start)/CLOCKS_PER_SEC); // print total time taken
 
+    char test_msg[] = "Äter marg simpson hon smakan go'";
+    const int msg_size = 64;
+    char *msg = malloc(msg_size);
+    strcpy(msg, test_msg);
     
-    char *msg = malloc(64);
-    strcpy(msg, "Hejsan mamma och pappa\n");
-    
-    printf("%s", msg);
+    printf("Message to send: %s\n", msg);
 
-    // send_msg_udp(msg);
+    // // send msg 
+    // if(send_msg_udp(msg, msg_size) == -1){
+    //     printf("Message could NOT be sent..\n");
+    // }
 
     free(msg);
     msg = NULL;
 
 }
+
+ void write_bmp(unsigned char *buf, char *new_file, int new_file_len){
+    FILE *new_pic = fopen(new_file, "wb");  // opens new file
+    fwrite(buf, 1, 54, new_pic);            // write header to new file
+    
+    /* 
+    writes bytes to new file in chunks of 3 at a time.
+    writes in order B, G, A
+    pixel data starts on i 54 since header contains 14+40 bytes of data
+    */
+    for(int i = 54; i < new_file_len; i += 3){
+        fwrite(&buf[i], 1, 3, new_pic);
+    }
+
+    free(buf); // frees malloc buffer after copying
+}
+
