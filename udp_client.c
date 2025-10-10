@@ -12,8 +12,8 @@
 #define PACKAGE_SIZE 1024
 #define PIXELCOUNT 130560
 // #define SERVER_ADDR "127.0.0.1" // loopback
-#define SERVER_ADDR "192.168.0.220" //local net
-#define CLIENT_ADDR "192.168.0.104"
+#define LAPTOP_ADDR "192.168.0.220" //local net
+#define DESKTOP_ADDR "192.168.0.104"
 
 
 int send_packets(char *buf);
@@ -29,7 +29,7 @@ int send_msg_udp(char *data, int size_data){ // sends single packet to server, r
     // int test_size = strlen(test_message);
 
     struct sockaddr_in servaddr;
-        servaddr.sin_addr.s_addr = inet_addr(SERVER_ADDR);
+        servaddr.sin_addr.s_addr = inet_addr(LAPTOP_ADDR);
         servaddr.sin_port = htons(PORT);
         servaddr.sin_family = AF_INET;
 
@@ -49,7 +49,7 @@ int send_packets(char *buf){
     int total_packets = 386;    // totalbytes (391734) / payload size (1016) ~= 386    385,5 rounded up
     
     struct sockaddr_in servaddr;
-        servaddr.sin_addr.s_addr = inet_addr(SERVER_ADDR);
+        servaddr.sin_addr.s_addr = inet_addr(LAPTOP_ADDR);
         servaddr.sin_port = htons(PORT);
         servaddr.sin_family = AF_INET;
 

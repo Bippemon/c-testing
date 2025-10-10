@@ -21,7 +21,7 @@ void write_bmp(unsigned char *buf, char *new_file, int new_file_len);
 int main(){
     // pic_to_pic();
 
-    printf("Listening on address: %s\nWaiting for request...\n", CLIENT_ADDR);
+    printf("Listening on address: %s\nWaiting for request...\n", DESKTOP_ADDR);
     while(!wait_for_request()){
         continue;
     }

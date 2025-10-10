@@ -5,8 +5,8 @@
 #include <stdlib.h>
 #include <sys/socket.h>
 
-#define SERVER_ADDR "192.168.0.220" //local net
-#define CLIENT_ADDR "192.168.0.104"
+#define LAPTOP_ADDR "192.168.0.220" //local net
+#define DESKTOP_ADDR "192.168.0.104"
 
 int send_msg_udp(char *data, int size_data);
 int send_packets(char *buf);

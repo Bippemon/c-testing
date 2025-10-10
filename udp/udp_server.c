@@ -6,8 +6,8 @@
 
 #define PORT 7777
 // #define SERVER_ADDR "127.0.0.1" // loopback
-#define SERVER_ADDR "192.168.0.220" //local net
-#define CLIENT_ADDR "192.168.0.104"
+#define LAPTOP_ADDR "192.168.0.220" //local net
+#define DESKTOP_ADDR "192.168.0.104"
 
 
 int server_loop(FILE *data);
@@ -27,7 +27,7 @@ int main(){
 int server_loop(FILE *file_to_write){
     char buffer[1024];
     struct sockaddr_in servaddr, clientaddr;
-        servaddr.sin_addr.s_addr = inet_addr(CLIENT_ADDR);
+        servaddr.sin_addr.s_addr = INADDR_ANY;
         servaddr.sin_port = htons(PORT);
         servaddr.sin_family = AF_INET;
     
@@ -69,12 +69,12 @@ int server_loop(FILE *file_to_write){
 }
 
 void request_image(){
-    printf("Requesting from address: %s\n", CLIENT_ADDR);
+    printf("Requesting from address: %s\n", LAPTOP_ADDR);
 
     char buffer[8] = "pic pls";
 
     struct sockaddr_in servaddr, clientaddr;
-        servaddr.sin_addr.s_addr = inet_addr(CLIENT_ADDR);
+        servaddr.sin_addr.s_addr = inet_addr(DESKTOP_ADDR);
         servaddr.sin_port = htons(PORT);
         servaddr.sin_family = AF_INET;
 
