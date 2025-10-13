@@ -4,7 +4,8 @@
 #include <time.h>
 #include <sys/time.h>
 #include <sys/socket.h>
-#include "udp_client.h"
+
+#include "client.h"
 
 
 #define PIC_WIDTH 480
@@ -19,12 +20,6 @@ void write_bmp(unsigned char *buf, char *new_file, int new_file_len);
 
 
 int main(){
-    // pic_to_pic();
-
-    printf("Listening on address: %s\nWaiting for request...\n", DESKTOP_ADDR);
-    while(!wait_for_request()){
-        continue;
-    }
 
     unsigned char *picture = read_bmp("benkis.bmp");
     send_packets(picture);
@@ -128,7 +123,7 @@ unsigned char *read_bmp(char *file_to_read){
     /* 
     writes bytes to new file in chunks of 3 at a time.
     writes in order B, G, A
-    pixel data starts on i 54 since header contains 14+40 bytes of data
+    pixel data starts on i = 54 since header contains 14+40 bytes of data
     */
     for(int i = 54; i < new_file_len; i += 3){
         fwrite(&buf[i], 1, 3, new_pic);

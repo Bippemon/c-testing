@@ -6,7 +6,7 @@
 
 #define PORT 7777
 // #define SERVER_ADDR "127.0.0.1" // loopback
-#define LAPTOP_ADDR "127.0.0.1" //local net
+#define LAPTOP_ADDR "127.0.0.1" 
 #define DESKTOP_ADDR "127.0.0.1"
 
 
@@ -69,6 +69,8 @@ int server_loop(FILE *file_to_write){
 }
 
 void request_image(){
+    // Sends a TCP request to host machine (WSL)
+
     printf("Requesting from address: %s\n", LAPTOP_ADDR);
 
     char buffer[8] = "pic pls";
@@ -81,7 +83,6 @@ void request_image(){
     int sockfd = socket(AF_INET, SOCK_DGRAM, 0);
 
     sendto(sockfd, buffer, 8, 0, (const struct sockaddr*)&servaddr, sizeof(servaddr));
-
     
     close(sockfd);
 }

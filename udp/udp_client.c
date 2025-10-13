@@ -8,13 +8,8 @@
 
 #include "udp_client.h"
 
-#define PORT 7777
 #define PACKAGE_SIZE 1024
 #define PIXELCOUNT 130560
-// #define SERVER_ADDR "127.0.0.1" // loopback
-#define LAPTOP_ADDR "127.0.0.1" 
-#define DESKTOP_ADDR "127.0.0.1"
-
 
 int send_packets(char *buf);
 char *build_udp_packet(char *buf, uint16_t packet_id, uint16_t packet_amt, uint32_t offset, int payload_size, int total_bytes);

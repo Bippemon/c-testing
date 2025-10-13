@@ -5,6 +5,8 @@
         "stdio.h": "c",
         "endian.h": "c",
         "udp_client.h": "c",
-        "socket.h": "c"
+        "socket.h": "c",
+        "compare": "cpp",
+        "client.h": "c"
     }
 }
