@@ -65,7 +65,7 @@ void send_packets(char *file_buffer){
 
         printf("Package number: %d sent\n", packet_id + 1);
 
-        usleep(500); //sleeps for 1ms
+        usleep(500); //sleeps   for 0,5ms
     }
     close(sockfd);
 }

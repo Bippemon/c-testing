@@ -20,6 +20,7 @@ void write_bmp(unsigned char *buf, char *new_file, int new_file_len);
 
 
 int main(){
+    
 
     unsigned char *picture = read_bmp("benkis.bmp");
     send_packets(picture);

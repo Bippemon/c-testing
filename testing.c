@@ -4,9 +4,13 @@
 
 int main(){
 
-    for(unsigned short i = 0; i < 66000; i += 5){
-        printf("%i ", i);
+    FILE *file = fopen("test.txt", "rb");
+
+    char buffer[50];
+    fread(buffer, sizeof(file), 50, file);
+
+    for (int i = 0; i < 50; i++){
+        printf("%c", buffer[i]);
     }
 
-    return 0;
 }
